@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My billings</title>
+</head>
+<body>
+
+<table align="center" border="1">
+    <tr>
+        <th>Id</th>
+        <th>Detail</th>
+        <th>Amount</th>
+    </tr>
+    <tr th:each="billing: ${billingList}">
+        <td><span th:text="${billing.id}"></span></td>
+        <td><span th:text="${billing.detail}"></span></td>
+        <td><span th:text="${billing.amount}"></span></td>
+    </tr>
+</table>
+</body>
+</html>

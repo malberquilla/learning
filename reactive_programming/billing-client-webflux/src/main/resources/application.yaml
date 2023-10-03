@@ -1,0 +1,5 @@
+
+billing:
+  server: http://localhost:8081/billing
+server:
+  port: 8083

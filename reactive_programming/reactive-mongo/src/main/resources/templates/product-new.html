@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            width: 50%;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<h1>Add New Product</h1>
+
+<form method="post"
+      th:action="@{/product}"
+      th:object="${productDto}">
+    <input th:field="*{id}" type="hidden"/>
+    <label for="detail">Detail:</label>
+    <input id="detail" name="detail" required="required" th:field="*{detail}" type="text"/>
+    <span style="color: red;" th:errors="*{detail}"></span>
+
+    <label for="price">Price:</label>
+    <input id="price" name="price" required="required" step="0.01" th:field="*{price}"
+           type="number"/>
+    <span style="color: red;" th:errors="*{price}"></span>
+    <br/>
+    <input th:value="${productDto.id} == null ? 'Add product' : 'Update product'" type="submit"/>
+</form>
+</body>
+</html>

@@ -7,3 +7,12 @@ spring:
       host: localhost
       port: 27017
       database: reactivedb
+
+  thymeleaf:
+    reactive:
+      max-chunk-size: 1024
+
+  webflux:
+    hiddenmethod:
+      filter:
+        enabled: true

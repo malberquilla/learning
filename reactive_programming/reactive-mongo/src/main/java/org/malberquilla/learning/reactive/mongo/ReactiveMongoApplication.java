@@ -5,6 +5,7 @@ import org.malberquilla.learning.reactive.mongo.repository.ProductRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 
 import lombok.extern.log4j.Log4j2;
 import reactor.core.publisher.Flux;
@@ -13,9 +14,12 @@ import reactor.core.publisher.Flux;
 @Log4j2
 public class ReactiveMongoApplication implements CommandLineRunner {
 
+    private final ReactiveMongoTemplate mongoTemplate;
     private final ProductRepository productRepository;
 
-    public ReactiveMongoApplication(ProductRepository productRepository) {
+    public ReactiveMongoApplication(ReactiveMongoTemplate mongoTemplate,
+        ProductRepository productRepository) {
+        this.mongoTemplate = mongoTemplate;
         this.productRepository = productRepository;
     }
 
@@ -24,9 +28,9 @@ public class ReactiveMongoApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         // Delete old data
-        productRepository.deleteAll().subscribe();
+        mongoTemplate.dropCollection("products").subscribe();
 
         // Initial data loading
         Flux<ProductEntity> productFlux = Flux.just(

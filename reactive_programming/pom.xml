@@ -16,6 +16,7 @@
 		<module>billing-client-webflux</module>
 		<module>reactive-examples</module>
 		<module>reactive-mongo</module>
+		<module>temperature-converter</module>
 	</modules>
 
 	<properties>

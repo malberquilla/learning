@@ -45,11 +45,13 @@ public class ProductController {
         if (validationResult.hasErrors()) {
             return PRODUCT_NEW;
         } else {
-            productService.save(
-                    ProductEntity.builder()
-                        .id(product.id())
-                        .detail(product.detail())
-                        .price(product.price()).build())
+            ProductEntity.ProductEntityBuilder productBuilder = ProductEntity.builder()
+                .detail(product.detail())
+                .price(product.price());
+            if (!product.id().isEmpty() && !product.id().isBlank()) {
+                productBuilder.id(product.id());
+            }
+            productService.save(productBuilder.build())
                 .subscribe(log::info);
             return "redirect:/product";
         }

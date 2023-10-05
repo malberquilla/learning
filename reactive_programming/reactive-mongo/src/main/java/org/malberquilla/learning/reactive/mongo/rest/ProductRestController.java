@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +29,7 @@ public class ProductRestController {
     }
 
     @PostMapping("/product")
-    public Mono<ResponseEntity<ProductDto>> addProduct(@Valid ProductDto product) {
+    public Mono<ResponseEntity<ProductDto>> addProduct(@Valid @RequestBody ProductDto product) {
         return this.service.save(UtilProduct.dtoToDomain(product))
             .map(p -> ResponseEntity.ok(UtilProduct.domainToDto(p)));
     }

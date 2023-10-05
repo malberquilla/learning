@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -50,6 +51,19 @@ public class ProductRestController {
                 }
             });
 
+    }
+
+    @PutMapping("/product/{id}")
+    public Mono<ProductDto> editProductById(@PathVariable("id") String id,
+        @RequestBody ProductDto product) {
+        return service.findById(id)
+            .flatMap(p -> {
+                p.setDetail(product.detail());
+                p.setPrice(product.price());
+                return service.save(p)
+                    .map(UtilProduct::domainToDto);
+            })
+            .switchIfEmpty(Mono.error(new ProductNotFoundException("Producto no encontrado")));
     }
 
     @GetMapping("/product")

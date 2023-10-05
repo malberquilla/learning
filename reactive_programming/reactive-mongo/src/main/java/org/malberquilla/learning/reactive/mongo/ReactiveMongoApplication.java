@@ -1,6 +1,6 @@
 package org.malberquilla.learning.reactive.mongo;
 
-import org.malberquilla.learning.reactive.mongo.entity.ProductEntity;
+import org.malberquilla.learning.reactive.mongo.domain.Product;
 import org.malberquilla.learning.reactive.mongo.repository.ProductRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -33,11 +33,11 @@ public class ReactiveMongoApplication implements CommandLineRunner {
         mongoTemplate.dropCollection("products").subscribe();
 
         // Initial data loading
-        Flux<ProductEntity> productFlux = Flux.just(
-            ProductEntity.builder().detail("Display").price(129.95).build(),
-            ProductEntity.builder().detail("Keyboard").price(109.90).build(),
-            ProductEntity.builder().detail("Mouse").price(89.95).build(),
-            ProductEntity.builder().detail("Printer").price(47.98).build()
+        Flux<Product> productFlux = Flux.just(
+            Product.builder().detail("Display").price(129.95).build(),
+            Product.builder().detail("Keyboard").price(109.90).build(),
+            Product.builder().detail("Mouse").price(89.95).build(),
+            Product.builder().detail("Printer").price(47.98).build()
         );
 
         productFlux

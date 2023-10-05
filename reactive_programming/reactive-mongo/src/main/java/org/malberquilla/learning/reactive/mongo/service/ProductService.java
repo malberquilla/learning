@@ -1,6 +1,6 @@
 package org.malberquilla.learning.reactive.mongo.service;
 
-import org.malberquilla.learning.reactive.mongo.entity.ProductEntity;
+import org.malberquilla.learning.reactive.mongo.domain.Product;
 import org.malberquilla.learning.reactive.mongo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,17 +30,17 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Mono<ProductEntity> findById(String id) {
-        return repository.findById(id);
-    }
-
-    @Override
-    public Flux<ProductEntity> findAll() {
+    public Flux<Product> findAll() {
         return repository.findAll();
     }
 
     @Override
-    public Mono<ProductEntity> save(ProductEntity product) {
+    public Mono<Product> findById(String id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    public Mono<Product> save(Product product) {
         return repository.save(product);
     }
 }

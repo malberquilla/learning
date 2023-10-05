@@ -2,8 +2,8 @@ package org.malberquilla.learning.reactive.mongo.controller;
 
 import java.time.Duration;
 
+import org.malberquilla.learning.reactive.mongo.domain.Product;
 import org.malberquilla.learning.reactive.mongo.dto.ProductDto;
-import org.malberquilla.learning.reactive.mongo.entity.ProductEntity;
 import org.malberquilla.learning.reactive.mongo.exception.ProductNotFoundException;
 import org.malberquilla.learning.reactive.mongo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ public class ProductController {
         if (validationResult.hasErrors()) {
             return PRODUCT_NEW;
         } else {
-            ProductEntity.ProductEntityBuilder productBuilder = ProductEntity.builder()
+            Product.ProductBuilder productBuilder = Product.builder()
                 .detail(product.detail())
                 .price(product.price());
             if (!product.id().isEmpty() && !product.id().isBlank()) {
@@ -76,7 +76,7 @@ public class ProductController {
         return this.productService.existsById(id)
             .flatMap(exists -> {
                 if (Boolean.TRUE.equals(exists)) {
-                    Mono<ProductEntity> product = productService.findById(id);
+                    Mono<Product> product = productService.findById(id);
                     model.addAttribute(PRODUCT_DTO_ATTR, product);
                     return Mono.just(PRODUCT_NEW);
                 } else {

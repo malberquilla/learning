@@ -57,6 +57,7 @@ public class ProductHandler {
             )
             .cast(Product.class)
             .flatMap(this.service::save)
-            .flatMap(p -> ServerResponse.noContent().build());
+            .flatMap(p -> ServerResponse.noContent().build())
+            .switchIfEmpty(ServerResponse.notFound().build());
     }
 }

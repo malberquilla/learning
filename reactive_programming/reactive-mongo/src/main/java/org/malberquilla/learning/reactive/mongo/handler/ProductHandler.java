@@ -6,6 +6,7 @@ import org.malberquilla.learning.reactive.mongo.domain.Product;
 import org.malberquilla.learning.reactive.mongo.dto.ProductDto;
 import org.malberquilla.learning.reactive.mongo.mapper.UtilProduct;
 import org.malberquilla.learning.reactive.mongo.service.ProductService;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -22,14 +23,17 @@ public class ProductHandler {
     }
 
     public Mono<ServerResponse> all(ServerRequest req) { //NOSONAR
-        return ServerResponse.ok().body(this.service.findAll(), ProductDto.class);
+        return ServerResponse.ok().body(this.service.findAll().log(), ProductDto.class);
     }
 
     public Mono<ServerResponse> create(ServerRequest req) {
         return req.bodyToMono(ProductDto.class)
             .flatMap(p -> this.service.save(UtilProduct.dtoToDomain(p)))
-            .flatMap(
-                p -> ServerResponse.created(URI.create("/handler/product" + p.getId())).build());
+            .map(UtilProduct::domainToDto)
+            .flatMap(p -> ServerResponse
+                .created(URI.create("/handler/product" + p.id()))
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(p), ProductDto.class));
     }
 
     public Mono<ServerResponse> delete(ServerRequest req) {
@@ -38,6 +42,7 @@ public class ProductHandler {
 
     public Mono<ServerResponse> getById(ServerRequest req) {
         return this.service.findById(req.pathVariable("id"))
+            .map(UtilProduct::domainToDto)
             .flatMap(p -> ServerResponse.ok().body(Mono.just(p), ProductDto.class))
             .switchIfEmpty(ServerResponse.notFound().build());
     }

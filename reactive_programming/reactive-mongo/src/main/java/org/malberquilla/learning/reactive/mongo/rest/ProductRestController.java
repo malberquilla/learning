@@ -47,7 +47,7 @@ public class ProductRestController {
                 if (Boolean.TRUE.equals(exists)) {
                     return service.deleteById(id);
                 } else {
-                    return Mono.error(new ProductNotFoundException("Producto no encontrado"));
+                    return Mono.error(new ProductNotFoundException("Product not found"));
                 }
             });
 
@@ -63,7 +63,7 @@ public class ProductRestController {
                 return service.save(p)
                     .map(UtilProduct::domainToDto);
             })
-            .switchIfEmpty(Mono.error(new ProductNotFoundException("Producto no encontrado")));
+            .switchIfEmpty(Mono.error(new ProductNotFoundException("Product not found")));
     }
 
     @GetMapping("/product")
